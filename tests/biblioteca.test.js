@@ -8,45 +8,43 @@ import {
     calcularTaxaAtraso,
 } from '../src/biblioteca.js';
 
-// describe() agrupa testes relacionados em um bloco
 describe('Sistema de biblioteca', () => {
     describe('Livros', () => {
-
-        // it(): cada um é UM caso de teste
-        it('deve verificar se existem livros cadastrados', () => {
-
-            // expect(valorRecebido).matcher(valorEsperado)
+        it('Verificar se existem livros cadastrados', () => {
             expect(listarLivros() === 0).toBeFalsy();
         });
 
         //
-        it('deve verificar se a lista possui a quantidade de livros esperada', () => {
-            expect(listarLivros()).toHaveLength(4);
+        it('Verificar se a lista possui a quantidade de livros esperada', () => {
+            expect(listarLivros()).toHaveLength(5);
         });
 
-        it('deve verificar se um livro específico pode ser encontrado', () => {
+        it('Verificar se um livro específico pode ser encontrado', () => {
             expect(livroExiste('Harry Potter e a Pedra Filosofal')).toBeTruthy();
         });
 
-        it('deve verificar se o título de um livro aparece na biblioteca', () => {
+        it('verificar se o título de um livro aparece na biblioteca', () => {
             const titulos = listarLivros().map((livro) => livro.titulo);
             expect(titulos).toContain('Harry Potter e a Pedra Filosofal');
         });
 
-        it('deve verificar se um livro inexistente esta identificado corretamente', () => {
+        it('Verificar se um livro inexistente esta identificado corretamente', () => {
             expect(livroExiste()).toBeFalsy();
         });
 
-        //???
-        it('deve verificar se um livro pode ser cadastrado', () => {
-            expect(cadastrarLivro()).toBe();
+        it('Cadastrar livro', () => {
+            const livro = cadastrarLivro({
+                titulo: 'O pequeno principe',
+                autor: 'Antoine de Saint-Exupéry',
+            });
+            expect(livro.titulo).toBe('O pequeno principe');
+            expect(livro.autor).toBe('Antoine de Saint-Exupéry');
         });
     });
 
     describe('Disponibilidade', () => {
-
-        it('deve verificar se um livro disponível é identificado como disponível', () => {
-            expect(livroDisponivel()).toBeTruthy();
+        it('Verificar se um livro disponível é identificado como disponível', () => {
+            expect(livroDisponivel('É Assim que Acaba')).toBeTruthy();
         });
 
         it('Não deve considerar um livro emprestado como disponível', () => {
@@ -54,34 +52,28 @@ describe('Sistema de biblioteca', () => {
         });
 
         it('Não deve tratar um livro inexistente como disponível', () => {
-            const disponivel = livroDisponivel('Livro Fastama');
-            expect(disponivel).toBeFalsy();
+            expect(livroDisponivel()).toBeFalsy();
         });
     });
 
     describe('Quantidade', () => {
-
         it('A biblioteca deve informar corretamente a quantidade de livros', () => {
-            const lista = listarLivros();
-            const quantidadeLivros = contarLivros();
-            expect(lista).toHaveLength(quantidadeLivros);
+            expect(listarLivros()).toHaveLength(contarLivros());
         });
 
-        //não faço ideia????
         it('A quantidade de livros retornada deve ser coerente com a lista', () => {
-            expect(contarLivros(contarLivros.length)).toBe(4);
+            expect(contarLivros()).toBe(listarLivros().length);
         });
     });
 
     describe('Informações', () => {
-
-        //acho q ta errado
+        
         it('A biblioteca deve possuir nome', () => {
-            expect(obterInformacoes('Biblioteca Codeverse')).toBe("string");
+            expect(typeof obterInformacoes().nome).toBe('string');
         });
 
         it('O nome da biblioteca deve ser o esperado', () => {
-            expect(obterInformacoes()).toBe('Biblioteca Codeverse');
+            expect(obterInformacoes().nome).toBe('Biblioteca Codeverse');
         });
 
         it('As informações retornadas devem possui a estrutura correta', () => {
@@ -89,7 +81,7 @@ describe('Sistema de biblioteca', () => {
                 nome: 'Biblioteca Codeverse',
                 totalLivros: contarLivros(),
                 cidade: 'London',
-                provincia: 'ON'
+                provincia: 'ON',
             });
         });
     });
