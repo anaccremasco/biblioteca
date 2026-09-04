@@ -1,4 +1,4 @@
-const TAXA_DIARIA = 0.1 * 15; 
+const TAXA_DIARIA = 0.1 * 15;
 
 let proximoId = 6;
 
@@ -58,7 +58,7 @@ export function cadastrarLivro({ titulo, autor, quantidade = 1, disponivel = fal
  * @returns {boolean} true se o livro existir, false caso contrário.
  */
 export function livroExiste(titulo) {
-    return livros.find((livro) => livro.titulo !== titulo);
+    return livros.find((livro) => livro.titulo === titulo);
 }
 
 /**
