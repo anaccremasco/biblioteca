@@ -9,22 +9,92 @@ import {
 } from '../src/biblioteca.js';
 
 // describe() agrupa testes relacionados em um bloco
-describe('nomeDaFuncao', () => {
+describe('Livros', () => {
 
     // it(): cada um é UM caso de teste
-    it('deve fazer o que a função promete', () => {
+    it('deve verificar se existem livros cadastrados', () => {
+        
         // expect(valorRecebido).matcher(valorEsperado)
-        expect(nomeDaFuncao(1)).toBe(1);
+        expect(listarLivros() === 0).toBeFalsy();
     });
 
     //
-    it('toBe() compara valores primitivos (número, string, boolean) por igualdade exata', () => {
-        expect(1 + 1).toBe(2);
+    it('deve verificar se a lista possui a quantidade de livros espearada', () => {
+         expect(listarLivros()).toHaveLength(4);
     });
 
-    it('toEqual() compara objetos e arrays por atributos', () => {
-        expect({ nome: 'Ana' }).toEqual({ nome: 'Ana' });
+     it('deve verificar se um livro específico pode ser encontrado', () => {
+         expect(livroExiste('Harry Potter e a Pedra Filosofal')).toBeTruthy();
     });
+
+     it('deve verificar se o título de um livro aparece na bibliotca', () => {
+         expect(listarLivros()).toContain('Harry Potter e a Pedra Filosofal');
+    });
+
+     it('deve verificar se um livro inexistente esta identificado corretamente', () => {
+         expect(livroExiste()).toBeFalsy();
+    });
+});
+
+describe('Disponibilidade', () => {
+
+     it('deve verificar se um livro disponível é identificado como disponível', () => {
+         expect(livroDisponivel()).toBeTruthy();
+    });
+
+     it('Não deve considerar um livro emprestado como disponível', () => {
+         expect(livroDisponivel("Percy Jackson e o Ladrão de Raios")).toBeFalsy();
+    });
+
+     it('Não deve tratar um livro iexistente como disponível', () => {
+         expect(livroDisponivel()).toBeFalsy();
+    });
+});
+
+    describe('Quantidade', () => {
+
+        it('A biblioteca deve informar corretamente a quantidade de livros', () => {
+         expect(contarLivros()).toBe(4);
+    });
+
+    //não faço ideia????
+     it('A quantidade de livros retornada deve ser coerente com a lista', () => {
+         expect(contarLivros(contarLivros.length)).toBe(4);
+    });
+});
+
+ describe('Informações', () => {
+
+    //acho q ta errado
+      it('A biblioteca deve possuir nome', () => {
+         expect(obterInformacoes()).toBe("string");
+    });
+
+    it('O nome da biblioteca deve ser o esperado', () => {
+         expect(obterInformacoes()).toBe('Biblioteca Codeverse');
+    });
+
+     it('As informações retornadas devem possui a estrutura correta', () => {
+          expect(obterInformacoes(obterInformacoes)).toEqual({
+            nome: 'Biblioteca Codeverse',
+            totalLivros: contarLivros(),
+            cidade: 'London',
+            provincia: 'ON'});
+    });
+
+    //Taxa e cadastro de livros
+
+
+
+     it('toEqual() compara objetos e arrays por atributos', () => {
+        expect(obterInformacoes(obterInformacoes)).toEqual({ nome: 'Ana' });
+    });
+
+
+
+
+
+   
 
     //Verificar se existe
     it('toContain() verifica se um array ou string contém um item/trecho', () => {
